@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>
+    <%= title %>
+  </title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body align="center">
+  <h1>
+    <%= title %>
+  </h1>
+  <p>
+    <img src="<%= picture %>" width="300" height="300" />
+
+  </p>
+  <p>
+    <%= name %> 歡迎，你已成功登入。
+  </p>
+  <button class="btn btn-primary btn-sm box-shadow-primary text-white border-0 mr-3"
+    onclick="handleLineNotifyButtonClick()">
+    訂閱Notify服務
+  </button>
+  <script>
+    function handleLineNotifyButtonClick() {
+      let URL = 'https://notify-bot.line.me/oauth/authorize?';
+      URL += 'response_type=code';
+      //要求存取的範圍
+      URL += '&scope=notify';
+      URL += '&response_mode=form_post';
+      //channel id
+      URL += '&client_id=wXyzk8T5jjNLO83XVAZGJK';
+      // 與Line Developer Channel設定的一樣就好，驗證完就會經過瀏覽器轉址回來
+      URL += '&redirect_uri=https://de51-122-117-240-98.jp.ngrok.io/notify/callback';
+      // 狀態碼是會從client呼叫端帶到驗證端，再從驗證端帶回
+      // 因此應該可以作為一個亂數卡控確保是自   已丟出去的交易碼
+      URL += '&state=f094a459-1d16-42d6-a709-c2b61ec53d60';
+      window.location.href = URL;
+    }
+    function postData(url, data) {
+      // Default options are marked with *
+      return fetch(url, {
+        body: JSON.stringify(data), // must match 'Content-Type' header
+        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: 'same-origin', // include, same-origin, *omit
+        headers: {
+          'user-agent': 'Mozilla/4.0 MDN Example',
+          'content-type': 'application/json'
+        },
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        mode: 'cors', // no-cors, cors, *same-origin
+        redirect: 'follow', // manual, *follow, error
+        referrer: 'no-referrer', // *client, no-referrer
+      })
+        .then(response => response.json()) // 輸出成 json
+    }
+  </script>
+</body>
+
+</html>

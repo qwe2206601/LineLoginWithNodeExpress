@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>
+    <%= title %>
+  </title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body align="center">
+  <h1>
+    <%= title %>
+  </h1>
+  <p>
+    <img src="<%= picture %>" width="300" height="300" />
+
+  </p>
+  <p>
+    <%= name %> 恭喜，你已成功訂閱。
+  </p>
+  透過Notify發送訊息：<input id="message" type="text" name="message">
+  <button class="btn btn-primary btn-sm box-shadow-primary text-white border-0 mr-3" onclick="send()">
+    發送
+  </button>
+  <button class="btn btn-primary btn-sm box-shadow-primary text-white border-0 mr-3" onclick="revoke()">
+    取消訂閱Notify服務
+  </button>
+  <script>
+    function postData(url, data) {
+      // Default options are marked with *
+      return fetch(url, {
+        body: JSON.stringify(data), // must match 'Content-Type' header
+        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: 'same-origin', // include, same-origin, *omit
+        headers: {
+          'user-agent': 'Mozilla/4.0 MDN Example',
+          'content-type': 'application/json'
+        },
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        mode: 'cors', // no-cors, cors, *same-origin
+        redirect: 'follow', // manual, *follow, error
+        referrer: 'no-referrer', // *client, no-referrer
+      })
+        .then(response => response.json()) // 輸出成 json
+    }
+    function send() {
+      let message = document.querySelectorAll('#message')[0].value
+      postData('https://de51-122-117-240-98.jp.ngrok.io/notify/sendMessage', { message: message });
+      document.querySelectorAll('#message')[0].value = '';
+    }
+    async function revoke() {
+      await  postData('https://de51-122-117-240-98.jp.ngrok.io/notify/revoke');
+    }
+  </script>
+</body>
+
+</html>
